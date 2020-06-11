@@ -1,28 +1,49 @@
 <template>
-  <div id="password-reset-view">
-    <h1>Reset Password</h1>
-    <template v-if="emailLoading">
-      loading...
-    </template>
-    <template v-else-if="!emailCompleted">
-      <form @submit.prevent="submit">
-        <input v-model="inputs.email" type="text" id="email" placeholder="email">
-      </form>
-      <button @click="sendResetEmail(inputs)">
-        send email
-      </button>
-      <span class="error" v-show="emailError">
-        A error occured while processing your request.
-      </span>
+
+  <div class="password-reset-view">
+    <template v-if="!emailCompleted">
+      <b-card
+        title="Create Account"
+      >
+      <b-form @submit="onSubmit" @reset="onReset" class="reset-form">
+        <b-form-group
+          id="input-group-4"
+          label="Email address:"
+          label-for="input-4"
+        >
+          <b-form-input
+            id="input-4"
+            v-model="form.email"
+            type="email"
+            required
+            placeholder="Enter user email"
+          ></b-form-input>
+        </b-form-group>
+        <div class="d-flex justify-content-center">
+          <b-button class="mr-3" type="submit" variant="primary" :disabled="emailLoading">
+            <b-spinner label="Spinning" variable="success" v-if="emailLoading" class="mr-3"></b-spinner>
+            Send Email
+          </b-button>
+          <b-button type="reset" variant="danger">Reset</b-button>
+        </div>
+        <b-badge href="#" variant="danger" v-show="emailError">
+          An error occured while processing your request.
+        </b-badge>
+      </b-form>
+      </b-card>
+      <div class="mt-4">
+        Return to Login page 
+        <router-link to="/login">Login</router-link>
+      </div>
     </template>
     <template v-else>
       <div>
         Check your inbox for a link to reset your password. If an email doesn't appear within a few
         minutes, check your spam folder.
       </div>
-      <router-link to="/login">
-        return to login page
-      </router-link>
+      <div>
+        <router-link to="/login">return to login page</router-link>
+      </div>
     </template>
   </div>
 </template>
@@ -32,17 +53,28 @@ import { mapActions, mapState } from 'vuex';
 
 export default {
   data() {
-    return { inputs: { email: '' } };
+    return { form: { email: '' } };
   },
   computed: mapState('password', [
     'emailCompleted',
     'emailError',
     'emailLoading',
   ]),
-  methods: mapActions('password', [
+  methods: {
+    ... mapActions('password', [
     'sendResetEmail',
     'clearEmailStatus',
   ]),
+  
+    onSubmit(evt) {
+      evt.preventDefault();
+      this.sendResetEmail(this.form);
+    },
+    onReset(evt) {
+      evt.preventDefault();
+      this.form.email = "";
+    }
+  },
   beforeRouteLeave(to, from, next) {
     this.clearEmailStatus();
     next();
@@ -51,12 +83,15 @@ export default {
 </script>
 
 <style>
-form input {
-  display: block
+.password-reset-view {
+  min-height: calc(100vh - 66px);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
-
-.error {
-  color: crimson;
-  font-size: 12px;
+.reset-form {
+  min-width: 350px;
 }
 </style>

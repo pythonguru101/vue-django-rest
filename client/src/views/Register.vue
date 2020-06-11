@@ -126,7 +126,7 @@ export default {
 
 <style>
 .register-view {
-  min-height: 100vh;
+  min-height: calc(100vh - 66px);
   width: 100%;
   display: flex;
   justify-content: center;

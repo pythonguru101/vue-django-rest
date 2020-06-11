@@ -1,9 +1,9 @@
 <template>
-  <div class="login-form">
+  <div class="login-view">
     <b-card
       title="Login"
     >
-    <b-form @submit="onSubmit" @reset="onReset">
+    <b-form @submit="onSubmit" @reset="onReset" class="login-form">
       <b-form-group
         id="input-group-1"
         label="User name:"
@@ -28,7 +28,7 @@
         ></b-form-input>
       </b-form-group>
       <div class="d-flex justify-content-center">
-        <b-button class="mr-3" type="submit" variant="primary">Submit</b-button>
+        <b-button class="mr-3" type="submit" variant="primary">Login</b-button>
         <b-button type="reset" variant="danger">Reset</b-button>
       </div>
     </b-form>
@@ -71,12 +71,16 @@ export default {
 </script>
 
 <style>
-.login-form {
-  min-height: 100vh;
+.login-view {
+  min-height: calc(100vh - 66px);
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.login-form {
+  min-width: 350px;
 }
 </style>

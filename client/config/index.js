@@ -3,7 +3,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
-
+const BASE_URL = 'http://192.168.2.167:8000';
 module.exports = {
   dev: {
     // Paths
@@ -11,11 +11,15 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://192.168.2.167:8000',
+        target: BASE_URL,
         changeOrigin: true
       },
       '/auth': {
-        target: 'http://192.168.2.167:8000',
+        target: BASE_URL,
+        //changeOrigin: true
+      },
+      '/registration': {
+        target: BASE_URL,
         //changeOrigin: true
       }
     },
