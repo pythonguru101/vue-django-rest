@@ -8,7 +8,6 @@ from django.db.models import (
     ManyToManyField,
     Model,
     TextField,
-    OneToOneField,
 )
 
 
@@ -18,7 +17,6 @@ class User(AbstractUser):
 
 class Post(Model):
     author = ForeignKey(User, related_name='posts', on_delete=CASCADE)
-    # author = ManyToManyField(User, related_name='posts')
     created = DateTimeField(auto_now_add=True)
     content = TextField(blank=True, null=True)
     title = CharField(max_length=255)

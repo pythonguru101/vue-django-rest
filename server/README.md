@@ -2,19 +2,18 @@
 
 ``` bash
 # install dependencies
-pipenv install --dev
-pipenv shell
+pip install -r requirements.txt
 
 # setup development database
-./manage.py makemigrations api --noinput
-./manage.py migrate --noinput
+python manage.py makemigrations api --noinput
+python manage.py migrate --noinput
 
 # load data
-./manage.py createsuperuser --username=root --email=root@example.com --noinput
-./manage.py create_fixtures
+python manage.py createsuperuser --username=root --email=root@example.com --noinput
+python manage.py create_fixtures
 
 # run development server
-./manage.py runserver --settings=server.settings
+python manage.py runserver --settings=server.settings
 ```
 
 **Note:** You should install [pipenv](https://docs.pipenv.org/) before installing any python dependencies.
