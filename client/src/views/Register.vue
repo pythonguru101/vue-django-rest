@@ -38,7 +38,7 @@
           ></b-form-input>
         </b-form-group>
         <b-form-group
-          id="input-group-1"
+          id="input-group-4"
           label="Email address:"
           label-for="input-4"
         >
