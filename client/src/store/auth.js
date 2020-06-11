@@ -7,6 +7,10 @@ import {
   LOGOUT,
   REMOVE_TOKEN,
   SET_TOKEN,
+  LOADING_START,
+  LOADING_FAILURE,
+  LOADING_SUCCESS,
+  SET_USER_DATA,
 } from './types';
 
 const TOKEN_STORAGE_KEY = 'TOKEN_STORAGE_KEY';
@@ -14,8 +18,10 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const initialState = {
   authenticating: false,
+  loading: false,
   error: false,
   token: null,
+  userData: null,
 };
 
 const getters = {
@@ -29,6 +35,13 @@ const actions = {
       .then(({ data }) => commit(SET_TOKEN, data.key))
       .then(() => commit(LOGIN_SUCCESS))
       .catch(() => commit(LOGIN_FAILURE));
+  },
+  getAccountDetails({ commit }) {
+    commit(LOADING_START);
+    return auth.getAccountDetails()
+      .then(({ data }) => commit(SET_USER_DATA, data))
+      .then(() => commit(LOADING_SUCCESS))
+      .catch(() => commit(LOADING_FAILURE));
   },
   logout({ commit }) {
     return auth.logout()
@@ -49,6 +62,10 @@ const actions = {
 };
 
 const mutations = {
+  [LOGIN_BEGIN](state) {
+    state.authenticating = true;
+    state.error = false;
+  },
   [LOGIN_BEGIN](state) {
     state.authenticating = true;
     state.error = false;
@@ -74,6 +91,23 @@ const mutations = {
     localStorage.removeItem(TOKEN_STORAGE_KEY);
     delete session.defaults.headers.Authorization;
     state.token = null;
+  },
+
+  
+  [LOADING_START](state) {
+    state.loading = true;
+    state.error = false;
+  },
+  [LOADING_FAILURE](state) {
+    state.loading = false;
+    state.error = true;
+  },
+  [LOADING_SUCCESS](state) {
+    state.loading = false;
+    state.error = false;
+  },
+  [SET_USER_DATA](state, data) {
+    state.userData = data;
   },
 };
 

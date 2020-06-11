@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import About from '../views/About';
+import Users from '../views/Users';
+import Profile from '../views/Profile';
 import Home from '../views/Home';
 import Login from '../views/Login';
 import Lost from '../views/Lost';
@@ -49,8 +50,13 @@ export default new Router({
       redirect: '/home',
     },
     {
-      path: '/about',
-      component: About,
+      path: '/users',
+      component: Users,
+      beforeEnter: requireAuthenticated,
+    },
+    {
+      path: '/profile',
+      component: Profile,
       beforeEnter: requireAuthenticated,
     },
     {
