@@ -18,20 +18,20 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group id="input-group-2" label="Your password:" label-for="input-2">
+        <b-form-group id="input-group-2" label="First Name:" label-for="input-2">
           <b-form-input
             id="input-2"
             v-model="form.first_name"
             required
-            placeholder="Enter password"
+            placeholder="Enter first name"
           ></b-form-input>
         </b-form-group>
-        <b-form-group id="input-group-3" label="Confirm password:" label-for="input-3">
+        <b-form-group id="input-group-3" label="Last Name:" label-for="input-3">
           <b-form-input
             id="input-3"
             v-model="form.last_name"
             required
-            placeholder="Enter confirm password"
+            placeholder="Enter last name"
           ></b-form-input>
         </b-form-group>
         <b-form-group
