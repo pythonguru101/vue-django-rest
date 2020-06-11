@@ -9,18 +9,18 @@ class SafeMethodsOnly(BasePermission):
         return request.method in SAFE_METHODS
 
 
-class AdminOrAuthorCanEdit(BasePermission):
+class AdminOrUserCanEdit(BasePermission):
     def has_permission(self, request, view):
         """All users can list or view."""
         return request.method in SAFE_METHODS
 
     def has_object_permission(self, request, view, obj=None):
-        """Only the author can modify existing instances."""
+        """Only the user can modify existing instances."""
         is_safe = request.method in SAFE_METHODS
 
         try:
-            is_author = request.user == obj.author
+            is_user = request.user == obj.user
         except AttributeError:
-            is_author = False
+            is_user = False
 
-        return is_safe or is_author or request.user.is_superuser
+        return is_safe or is_user or request.user.is_superuser

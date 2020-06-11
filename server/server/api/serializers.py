@@ -6,12 +6,12 @@ from rest_framework.serializers import (
 
 from .models import (
     User,
-    Post,
+    Shop,
 )
 
 
 class UserSerializer(ModelSerializer):
-    posts = HyperlinkedIdentityField(view_name='user-posts')
+    shops = HyperlinkedIdentityField(view_name='user-shops')
 
     class Meta:
         model = User
@@ -20,19 +20,21 @@ class UserSerializer(ModelSerializer):
             'username',
             'first_name',
             'last_name',
-            'posts',
+            'shops',
+            'phone',
+            'nick_name'
         )
 
 
-class PostSerializer(ModelSerializer):
-    author = HyperlinkedRelatedField(view_name='user-detail', read_only=True)
+class ShopSerializer(ModelSerializer):
+    user = HyperlinkedRelatedField(view_name='user-detail', read_only=True)
 
     def get_validation_exclusions(self, *args, **kwargs):
-        # exclude the author field as we supply it later on in the
+        # exclude the user field as we supply it later on in the
         # corresponding view based on the http request
-        exclusions = super(PostSerializer, self).get_validation_exclusions(*args, **kwargs)
-        return exclusions + ['author']
+        exclusions = super(ShopSerializer, self).get_validation_exclusions(*args, **kwargs)
+        return exclusions + ['user']
 
     class Meta:
-        model = Post
+        model = Shop
         fields = '__all__'

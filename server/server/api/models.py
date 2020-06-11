@@ -12,12 +12,14 @@ from django.db.models import (
 
 
 class User(AbstractUser):
-    followers = ManyToManyField('self', related_name='followees', symmetrical=False)
+    phone = CharField(max_length=20, blank=True, null=True)
+    nick_name = CharField(max_length=20, blank=True, null=True)
+    followers = ManyToManyField('self', related_name='follower', symmetrical=False)
 
 
-class Post(Model):
-    author = ForeignKey(User, related_name='posts', on_delete=CASCADE)
+class Shop(Model):
+    user = ForeignKey(User, related_name='shops', on_delete=CASCADE)
     created = DateTimeField(auto_now_add=True)
+    name = CharField(max_length=255)
     content = TextField(blank=True, null=True)
-    title = CharField(max_length=255)
     updated = DateTimeField(auto_now=True)

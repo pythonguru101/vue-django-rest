@@ -13,7 +13,7 @@ from factory.django import DjangoModelFactory
 from faker import Faker
 
 from server.api.models import (
-    Post,
+    Shop,
 )
 
 delta = datetime.timedelta
@@ -32,13 +32,13 @@ class UserFactory(DjangoModelFactory):
     username = Sequence(lambda n: '{}{}'.format(fake.user_name(), n))
 
 
-class PostFactory(DjangoModelFactory):
+class ShopFactory(DjangoModelFactory):
     class Meta:
-        model = Post
+        model = Shop
 
-    author = SubFactory(UserFactory)
+    user = SubFactory(UserFactory)
 
-    title = LazyFunction(lambda: fake.text(randint(5, 20)))
+    name = LazyFunction(lambda: fake.text(randint(5, 20)))
     content = LazyFunction(lambda: fake.text(randint(20, 500)))
     created = LazyFunction(lambda: now() - delta(days=365))
     updated = LazyAttribute(lambda o: o.created + delta(days=randint(0, 365)))

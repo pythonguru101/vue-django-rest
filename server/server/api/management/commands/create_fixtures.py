@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 
 from server.api.fixtures.factories import (
     UserFactory,
-    PostFactory,
+    ShopFactory,
 )
 
 
@@ -14,13 +14,13 @@ class Command(BaseCommand):
         UserFactory()
         UserFactory()
 
-        PostFactory()
-        PostFactory()
-        PostFactory()
-        PostFactory()
-        PostFactory()
-        PostFactory()
-        PostFactory()
-        PostFactory()
-        PostFactory()
-        PostFactory()
+        ShopFactory()
+        ShopFactory()
+        ShopFactory()
+        ShopFactory()
+        ShopFactory()
+        ShopFactory()
+        ShopFactory()
+        ShopFactory()
+        ShopFactory()
+        ShopFactory()
