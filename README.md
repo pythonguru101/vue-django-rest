@@ -1,7 +1,7 @@
 Vue.js and Django REST
 ========================================================================
 A test [Vue.js](https://github.com/vuejs/vue) project featuring an unstyled auth and registration flow using endpoints from [django-rest-auth](https://github.com/Tivix/django-rest-auth).
-The main goal of applica1on - make an authoriza1on system and perform CRUD opera1ons on users and shops applica1ons.
+The main goal of application - make an authorization system and perform CRUD operations on users and shops applications.
 
 * [client](client)
 * [server](server)

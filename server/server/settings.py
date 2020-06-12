@@ -40,6 +40,7 @@ INSTALLED_APPS = (
 
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'rest_auth.registration',
     'server.api',
 )
