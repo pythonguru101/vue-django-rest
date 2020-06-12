@@ -2,6 +2,11 @@ from rest_framework.decorators import detail_route
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
+from django.http.response import JsonResponse
+
+import json
 
 from .permissions import (
     AdminOrUserCanEdit,
@@ -41,9 +46,22 @@ class ShopViewSet(ModelViewSet):
 
     permission_classes = (
         IsAuthenticated,
-        AdminOrUserCanEdit,
+        # AdminOrUserCanEdit,
     )
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
         return super(ShopViewSet, self).perform_create(serializer)
+
+
+@api_view(('GET',))
+def user_info(request):
+    user_id = request.user.id
+    user = User.objects.get(id=user_id)
+
+    return JsonResponse({
+        'username': user.username,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'is_superuser': user.is_superuser
+    })
