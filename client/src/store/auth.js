@@ -11,6 +11,7 @@ import {
   LOADING_FAILURE,
   LOADING_SUCCESS,
   SET_USER_DATA,
+  SET_USER_ROLE,
 } from './types';
 
 const TOKEN_STORAGE_KEY = 'TOKEN_STORAGE_KEY';
@@ -22,19 +23,31 @@ const initialState = {
   error: false,
   token: null,
   userData: null,
+  isSuperUser: null,
+  errorMsg: ""
 };
 
 const getters = {
   isAuthenticated: state => !!state.token,
+  isSuperUser: state => state.isSuperUser
 };
 
 const actions = {
-  login({ commit }, { username, password }) {
+  login({ commit, dispatch }, { username, password }) {
     commit(LOGIN_BEGIN);
     return auth.login(username, password)
-      .then(({ data }) => commit(SET_TOKEN, data.key))
+      .then(({ data }) => {
+        commit(SET_TOKEN, data.key);
+        dispatch('getUserRole');
+      })
       .then(() => commit(LOGIN_SUCCESS))
       .catch(() => commit(LOGIN_FAILURE));
+  },
+  getUserRole({ commit }) {
+    return auth.getFullUserInfo().then(({ data }) => {
+      console.log(data);
+      commit(SET_USER_ROLE, data.is_superuser);
+    })
   },
   getAccountDetails({ commit }) {
     commit(LOADING_START);
@@ -42,6 +55,19 @@ const actions = {
       .then(({ data }) => commit(SET_USER_DATA, data))
       .then(() => commit(LOADING_SUCCESS))
       .catch(() => commit(LOADING_FAILURE));
+  },
+  updateUser({ commit }, data) {
+    return new Promise((resolve) => {
+      auth.updateAccountDetails(data)
+        .then(() => {
+          return resolve(true)
+        })
+        .catch((err) => {
+          console.log(err.response.data.detail);
+          commit(LOADING_FAILURE, err.response.data.detail);
+          return resolve(false);
+        });
+    });
   },
   logout({ commit }) {
     return auth.logout()
@@ -65,14 +91,15 @@ const mutations = {
   [LOGIN_BEGIN](state) {
     state.authenticating = true;
     state.error = false;
-  },
-  [LOGIN_BEGIN](state) {
-    state.authenticating = true;
-    state.error = false;
+    state.errorMsg = "";
   },
   [LOGIN_FAILURE](state) {
     state.authenticating = false;
     state.error = true;
+  },
+  [LOADING_FAILURE](state, errorMsg = "") {
+    state.error = true;
+    state.errorMsg = errorMsg;
   },
   [LOGIN_SUCCESS](state) {
     state.authenticating = false;
@@ -81,6 +108,7 @@ const mutations = {
   [LOGOUT](state) {
     state.authenticating = false;
     state.error = false;
+    state.isSuperUser = null;
   },
   [SET_TOKEN](state, token) {
     if (!isProduction) localStorage.setItem(TOKEN_STORAGE_KEY, token);
@@ -93,7 +121,7 @@ const mutations = {
     state.token = null;
   },
 
-  
+
   [LOADING_START](state) {
     state.loading = true;
     state.error = false;
@@ -108,6 +136,10 @@ const mutations = {
   },
   [SET_USER_DATA](state, data) {
     state.userData = data;
+  },
+  [SET_USER_ROLE](state, data) {
+    console.log(data);
+    state.isSuperUser = data;
   },
 };
 

@@ -22,6 +22,7 @@ export const REGISTRATION_SUCCESS = 'REGISTRATION_SUCCESS';
 export const SET_TOKEN = 'SET_TOKEN';
 export const REMOVE_TOKEN = 'REMOVE_TOKEN';
 export const SET_USER_DATA = "SET_USER_DATA";
+export const SET_USER_ROLE = "SET_USER_ROLE";
 
 export const LOADING_START = "LOADING_START";
 export const LOADING_SUCCESS = "LOADING_SUCCESS";
